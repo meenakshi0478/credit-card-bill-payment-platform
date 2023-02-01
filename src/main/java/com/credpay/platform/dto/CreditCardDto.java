@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Data
 public class CreditCardDto {
-
     private Long id;
     private String userId;
     private Long cardNumber;

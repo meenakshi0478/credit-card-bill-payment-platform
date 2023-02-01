@@ -19,9 +19,7 @@ public class CreditCardRestModel {
     private LocalDate expirationDate;
     private BigDecimal totalLimit;
     private LocalDate dueDate;
-
     private BigDecimal availableCardLimit;
-
     private BigDecimal currentDebt;
 
 }

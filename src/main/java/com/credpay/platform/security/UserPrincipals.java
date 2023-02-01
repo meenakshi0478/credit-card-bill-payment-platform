@@ -12,22 +12,17 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserPrincipals implements UserDetails {
-
     private static final long serialVersionUID= -3206518490338399368L;
-
     private User user;
     private String userId;
 
     public UserPrincipals(User user) {
-
         this.user = user;
         this.userId = user.getUserId();
-
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<Authority> authorityEntities = new ArrayList<>();
 

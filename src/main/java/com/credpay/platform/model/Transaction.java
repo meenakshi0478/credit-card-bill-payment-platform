@@ -30,7 +30,7 @@ public class Transaction {
     private Payment payment;
 
     private String status;
-    // getters and setters
+
 }
 
 

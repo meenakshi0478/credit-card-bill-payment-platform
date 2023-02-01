@@ -26,8 +26,6 @@ public class BankAccountService {
         BeanUtils.copyProperties(bankAccountDto, bankAccountModel );
         bankAccountModel.setUserId(userId);
         BankAccountModel storedBankDetails = bankAccountRepository.save(bankAccountModel);
-
-
         BankAccountDto returnValue = new BankAccountDto();
         BeanUtils.copyProperties(storedBankDetails, returnValue);
         return returnValue;
@@ -51,10 +49,7 @@ public class BankAccountService {
 
     public void deleteByUserIdAndId(String userId, Long id) {
         BankAccountModel bankAccountModel = bankAccountRepository.findByUserIdAndId(userId, id);
-
-        if (bankAccountModel == null)
-            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-
+        if (bankAccountModel == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
         bankAccountRepository.delete(bankAccountModel);
     }
 

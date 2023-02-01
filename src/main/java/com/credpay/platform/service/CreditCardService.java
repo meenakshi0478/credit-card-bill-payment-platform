@@ -1,7 +1,6 @@
 package com.credpay.platform.service;
 
 import com.credpay.platform.dto.CreditCardDto;
-import com.credpay.platform.dto.UserDto;
 import com.credpay.platform.exceptions.ErrorMessages;
 import com.credpay.platform.exceptions.UserServiceException;
 import com.credpay.platform.model.CreditCard;
@@ -68,28 +67,20 @@ public class CreditCardService {
 
     }
 
-
     public void removeCreditCard(String userId, Long creditCardId) {
         CreditCard creditCard = creditCardRepository.findByUserIdAndId(userId, creditCardId);
-        if (creditCard == null) {
-            throw new RuntimeException("Credit card not found");
-        }
+        if (creditCard == null) { throw new RuntimeException("Credit card not found"); }
         creditCardRepository.delete(creditCard);
     }
 
     public List<CreditCard> findAllCreditCards() {
-
         List<CreditCard> creditCardList = creditCardRepository.findAllActiveCreditCardList();
         return creditCardList;
     }
 
     public void deleteUserIdAndId(String userId, Long id) {
-
         CreditCard creditCard = creditCardRepository.findByUserIdAndId(userId, id);
-
-        if (creditCard == null)
-            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-
+        if (creditCard == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
         creditCardRepository.delete(creditCard);
         User user = userRepository.findByUserId(userId);
         emailSenderService.sendSimpleEmail(user.getEmail()," CreditCard Deactivated Successfully ",

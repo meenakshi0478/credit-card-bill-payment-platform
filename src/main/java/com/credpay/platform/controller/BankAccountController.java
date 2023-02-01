@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bank")
-public class BankController {
+public class BankAccountController {
 
     private final BankAccountRepository bankAccountRepository;
     private final BankAccountService bankAccountService;
 
-    public BankController(BankAccountRepository bankAccountRepository, BankAccountService bankAccountService) {
+    public BankAccountController(BankAccountRepository bankAccountRepository, BankAccountService bankAccountService) {
         this.bankAccountRepository = bankAccountRepository;
         this.bankAccountService = bankAccountService;
     }
@@ -26,7 +26,6 @@ public class BankController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @GetMapping("{userId}/get/{id}")
     public Optional<BankAccountModel> getBankById(@PathVariable Long id , @PathVariable String userId) {
-
         Optional<BankAccountModel> returnValue = bankAccountService.getBankDetailsById(id);;
         return returnValue;
 
@@ -36,10 +35,9 @@ public class BankController {
     @PreAuthorize(" #userId == principal.userId")
     @PostMapping("/add/{userId}/bankDetails")
     public ResponseEntity<BankAccountModel> addBankDetails(@PathVariable("userId") String userId,
-                                                          @RequestBody BankAccountDto bankAccountDetails) {
+                                                           @RequestBody BankAccountDto bankAccountDetails) {
         BankAccountDto bankAccountDto = new BankAccountDto();
         BeanUtils.copyProperties(bankAccountDetails, bankAccountDto);
-
         BankAccountDto savedBankAccount = bankAccountService.addBankDetails(userId, bankAccountDto);
         BankAccountModel returnValue = new BankAccountModel();
         BeanUtils.copyProperties(savedBankAccount, returnValue);
@@ -49,8 +47,8 @@ public class BankController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PutMapping("/{userId}/update/{id}")
     public ResponseEntity<BankAccountModel> updateCreditCard(@PathVariable("userId") String userId,
-                                                                @PathVariable("id") Long id,
-                                                                @RequestBody UpdateBankAccountDto updateBankAccountDto) {
+                                                             @PathVariable("id") Long id,
+                                                             @RequestBody UpdateBankAccountDto updateBankAccountDto) {
         BankAccountModel bankAccountModel = new BankAccountModel();
         BankAccountDto bankAccountDto = new BankAccountDto();
         BeanUtils.copyProperties(updateBankAccountDto, bankAccountDto);
@@ -64,7 +62,7 @@ public class BankController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @DeleteMapping("/{userId}/delete/{id}")
     public ResponseEntity<String> removeBankAccount(@PathVariable("userId") String userId,
-                                                   @PathVariable("id") Long id) {
+                                                    @PathVariable("id") Long id) {
         bankAccountService.deleteByUserIdAndId( userId, id );
         return ResponseEntity.ok("Bank Removed Successfully");
     }

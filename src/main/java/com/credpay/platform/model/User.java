@@ -42,10 +42,6 @@ public class User implements Serializable {
             joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") },
             inverseJoinColumns = { @JoinColumn(name = "roles_id", referencedColumnName = "id") })
     private Collection<Role>roles;
-   /* @JoinTable(name="users_roles",
-            joinColumns = @JoinColumn(name="users_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="roles_id", referencedColumnName = "id"))
-    private Collection<Role>roles;*/
 
     public Collection<Role> getRoles() {
         return roles;
@@ -63,8 +59,6 @@ public class User implements Serializable {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.phoneNumber = phoneNumber;
-//        this.role = role;
-//        this.address = address;
     }
 
     public User(String firstName, String lastName, String email, String password, String role) {
@@ -131,7 +125,6 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-
     public String getAddress() {
         return address;
     }
@@ -140,12 +133,5 @@ public class User implements Serializable {
         this.address = address;
     }
 
-//    public String getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
 
 }

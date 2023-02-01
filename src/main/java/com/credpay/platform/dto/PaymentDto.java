@@ -14,14 +14,9 @@ import java.time.LocalDate;
 public class PaymentDto {
     private BigDecimal paymentAmount;
     private LocalDate paymentDate;
-
     private Long creditCardId;
-
     private Long billId;
-
     private String paymentMethod;
-
     private String paymentReference;
-
     private String status;
 }

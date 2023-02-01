@@ -20,7 +20,6 @@ public class BillService {
 
     @Autowired
     private BillRepository billRepository;
-
     @Autowired
     private CreditCardRepository creditCardRepository;
 

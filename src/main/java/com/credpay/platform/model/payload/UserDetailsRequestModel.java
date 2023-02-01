@@ -1,13 +1,11 @@
 package com.credpay.platform.model.payload;
 
 public class UserDetailsRequestModel {
-
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String phoneNumber;
-
 
     public String getFirstName() {
         return firstName;

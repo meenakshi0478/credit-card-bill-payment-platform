@@ -23,7 +23,4 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
     @Query(nativeQuery = true, value ="Select cardholder_name from credit_card cc where cc.id =:creditCardId")
     String findNameByCardId(Long creditCardId);
 
-
-
-//    boolean findByCreditCardNum(Long creditCardId);
 }

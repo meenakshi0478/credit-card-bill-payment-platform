@@ -27,21 +27,14 @@ public class BillController {
 
     @Autowired
     private BillService billService;
-
     @Autowired
     private PaymentService paymentService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CreditCardRepository creditCardRepository;
-
     @Autowired
     EmailSenderService emailSenderService;
-
-
-
 
 
     @GetMapping
@@ -50,9 +43,11 @@ public class BillController {
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/generate/{creditCardId}")
-    public ResponseEntity<BillDto> generateBill(@PathVariable Long creditCardId, @RequestBody BillDetailsRequestModel billDetails) {
+    public ResponseEntity<BillDto> generateBill(@PathVariable Long creditCardId,
+                                                @RequestBody BillDetailsRequestModel billDetails) {
         BillDto billDto = new BillDto();
         BeanUtils.copyProperties(billDetails, billDto);
 
@@ -71,9 +66,11 @@ public class BillController {
         return ResponseEntity.ok(returnValue);
     }
 
+
     @PreAuthorize("#userId == principal.userId")
     @PostMapping("/pay/{id}/{userId}")
-    public ResponseEntity<PaymentDto> payBill(@PathVariable Long id, @PathVariable String userId, @RequestBody PaymentDto paymentDto) {
+    public ResponseEntity<PaymentDto> payBill(@PathVariable Long id, @PathVariable String userId,
+                                              @RequestBody PaymentDto paymentDto) {
         PaymentDto processedPayment = paymentService.processPayment(id, userId,paymentDto);
         return new ResponseEntity<>(processedPayment, HttpStatus.CREATED);
     }

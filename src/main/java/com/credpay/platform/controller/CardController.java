@@ -6,23 +6,13 @@ import com.credpay.platform.dto.UserDto;
 import com.credpay.platform.model.CreditCard;
 import com.credpay.platform.model.payload.CreditCardDetailsRequest;
 import com.credpay.platform.model.payload.CreditCardRestModel;
-import com.credpay.platform.model.payload.UserRestModel;
 import com.credpay.platform.repository.CreditCardRepository;
 import com.credpay.platform.service.CreditCardService;
-import com.lowagie.text.DocumentException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,9 +30,7 @@ public class CardController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get/all")
     public ResponseEntity<List<CreditCard>> findAllActiveCreditCards(){
-
         List<CreditCard> creditCards = creditCardService.findAllCreditCards();
-
         return ResponseEntity.ok(creditCards);
     }
 
@@ -52,7 +40,6 @@ public class CardController {
                                                              @RequestBody CreditCardDetailsRequest creditCardDetails) {
         CreditCardDto creditCardDto = new CreditCardDto();
         BeanUtils.copyProperties(creditCardDetails, creditCardDto);
-
         CreditCardDto savedCreditCard = creditCardService.addCreditCard(userId, creditCardDto);
         CreditCardRestModel returnvalue = new CreditCardRestModel();
         BeanUtils.copyProperties(savedCreditCard, returnvalue);
@@ -62,8 +49,8 @@ public class CardController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PutMapping("/{userId}/update/{id}")
     public ResponseEntity<CreditCardRestModel> updateCreditCard(@PathVariable("userId") String userId,
-                                                       @PathVariable("id") Long id,
-                                                       @RequestBody UpdateCardDto updateCardDto) {
+                                                                @PathVariable("id") Long id,
+                                                                @RequestBody UpdateCardDto updateCardDto) {
         CreditCardRestModel creditCardRestModel = new CreditCardRestModel();
         CreditCardDto creditCardDto = new CreditCardDto();
         BeanUtils.copyProperties(updateCardDto, creditCardDto);
@@ -77,7 +64,7 @@ public class CardController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @DeleteMapping("/{userId}/delete/{id}")
     public ResponseEntity<String> removeCreditCard(@PathVariable("userId") String userId,
-                                   @PathVariable("id") Long id) {
+                                                   @PathVariable("id") Long id) {
         creditCardService.deleteUserIdAndId( userId, id );
         return ResponseEntity.ok("Card Removed Successfully");
     }

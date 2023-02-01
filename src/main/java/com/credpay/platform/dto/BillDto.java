@@ -11,23 +11,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillDto {
-
     private Long id;
-
     private BigDecimal billAmount;
-
     private LocalDate billDate;
-
     private LocalDate dueDate;
-
     private String userId;
-
     private String CardholderName;
-
     private Long creditCardId;
-
     private String description;
-
     private boolean paid;
 
 

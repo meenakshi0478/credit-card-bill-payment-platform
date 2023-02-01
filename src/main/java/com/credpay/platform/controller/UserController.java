@@ -30,29 +30,20 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
     @GetMapping("/get/{id}")
     public UserRestModel getUser(@PathVariable String id ) {
-
         UserRestModel returnValue = new UserRestModel();
         UserDto userDto = userService.getUserByUserId(id);
         BeanUtils.copyProperties(userDto, returnValue);
-
         return returnValue;
-
     }
 
     @PostMapping("/signup")
     public UserRestModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
         UserRestModel returnValue = new UserRestModel();
-
-        if (userDetails.getFirstName().isEmpty())
-            throw new RuntimeException ("first name needed");
-
-
+        if (userDetails.getFirstName().isEmpty()) throw new RuntimeException ("first name needed");
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails, userDto);
-
         UserDto createdUser = userService.createUser(userDto);
         BeanUtils.copyProperties(createdUser, returnValue);
-
         return returnValue;
     }
 
@@ -60,11 +51,9 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
     @PutMapping("/{id}/update")
     public UserRestModel updateUser(@PathVariable String id, @RequestBody UpdateUserDto updateUserDto) {
-
         UserRestModel returnValue = new UserRestModel();
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(updateUserDto, userDto);
-
         UserDto updateUser = userService.updateUser(id, updateUserDto);
         BeanUtils.copyProperties(updateUser, returnValue);
         return returnValue;
@@ -73,7 +62,6 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
     @DeleteMapping("/{id}/delete")
     public String deleteUserById(@PathVariable String id) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDto user = userService.getUser(auth.getName());
         userService.deleteUserById(id);

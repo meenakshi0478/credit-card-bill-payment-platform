@@ -10,11 +10,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBankAccountDto {
-
     private String accountHolderName;
-
     private String ifsc;
-
     private BigDecimal accountBalance;
 
 }
