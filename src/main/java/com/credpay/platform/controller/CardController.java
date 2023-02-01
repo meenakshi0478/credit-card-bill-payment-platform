@@ -82,21 +82,4 @@ public class CardController {
         return ResponseEntity.ok("Card Removed Successfully");
     }
 
-    @GetMapping("/{usersId}/{id}/export/bill")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
-      /*  response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=bill" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-
-        listUsers = service.listAll();
-
-        UserPDFExporter exporter = new UserPDFExporter(listUsers);
-        exporter.export(response);
-*/
-    }
-
 }
