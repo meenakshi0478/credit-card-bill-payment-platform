@@ -27,6 +27,7 @@ public class BillService {
         return billRepository.findAll();
     }
 
+
     public BillDto createBill(Long creditCardId, BillDto billDto) {
         Bill existingBill = billRepository.findByCreditCardIdAndId(creditCardId, billDto.getId());
         if (existingBill != null) {
@@ -45,5 +46,11 @@ public class BillService {
         BeanUtils.copyProperties(createdBill, returnValue);
         return returnValue;
     }
+
+    public List<Bill> getAllBillsById( String userId) {
+       List<Bill>bills= billRepository.findByCreditCardIdAndUserId(userId);
+        return bills;
+    }
+
 }
 

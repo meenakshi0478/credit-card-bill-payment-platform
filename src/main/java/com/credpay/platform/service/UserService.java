@@ -42,6 +42,8 @@ public class UserService implements UserDetailsService {
 
     public UserDto createUser(UserDto userDto) {
 
+//        emailSenderService.sendMailWithAttachment("meenakshimanirudhan@gmail.com","test","test","/home/sayone/Downloads/SQLNotes.pdf");
+
         if (userRepository.findByEmail(userDto.getEmail()) !=null)
             throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
         User user = new User();
@@ -53,7 +55,7 @@ public class UserService implements UserDetailsService {
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         User storedUserDetails = userRepository.save(user);
 
-        emailSenderService.sendSimpleEmail(user.getEmail()," Registration Successfull",
+        emailSenderService.sendSimpleEmail("meenakshimanirudhan@gmail.com"," Registration Successfull",
                 "Hi " + user.getFirstName() + " Welcome to CredPay. " +
                         " Thank you for creating Credpay account. For the next 12 months, you'll have free access to all CredPay services within the limits " +
                         " You can read and download all types of books from our store. " +
@@ -115,6 +117,8 @@ public class UserService implements UserDetailsService {
                         " Regard CredPay Team");
 
     }
+
+
 
 }
 

@@ -46,9 +46,9 @@ public class BankAccountController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PutMapping("/{userId}/update/{id}")
-    public ResponseEntity<BankAccountModel> updateCreditCard(@PathVariable("userId") String userId,
-                                                             @PathVariable("id") Long id,
-                                                             @RequestBody UpdateBankAccountDto updateBankAccountDto) {
+    public ResponseEntity<BankAccountModel> updateAccount(@PathVariable("userId") String userId,
+                                                          @PathVariable("id") Long id,
+                                                          @RequestBody UpdateBankAccountDto updateBankAccountDto) {
         BankAccountModel bankAccountModel = new BankAccountModel();
         BankAccountDto bankAccountDto = new BankAccountDto();
         BeanUtils.copyProperties(updateBankAccountDto, bankAccountDto);
