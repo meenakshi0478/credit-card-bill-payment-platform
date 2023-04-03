@@ -1,4 +1,4 @@
-package com.credpay.platform.model.payload;
+package com.credpay.platform.model.payload.Request;
 
 public class UserLoginRequestModel {
     private String email;

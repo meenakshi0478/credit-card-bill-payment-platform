@@ -1,4 +1,4 @@
-package com.credpay.platform.model.payload;
+package com.credpay.platform.model.payload.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardDetailsRequest {
+public class CreditCardDetailsRequestModel {
     private Long id;
     private String userId;
     private Long cardNumber;

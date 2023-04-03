@@ -2,18 +2,22 @@ package com.credpay.platform.controller;
 
 import com.credpay.platform.dto.CreditCardDto;
 import com.credpay.platform.dto.UpdateCardDto;
-import com.credpay.platform.dto.UserDto;
 import com.credpay.platform.model.CreditCard;
-import com.credpay.platform.model.payload.CreditCardDetailsRequest;
-import com.credpay.platform.model.payload.CreditCardRestModel;
+import com.credpay.platform.model.payload.Request.CreditCardDetailsRequestModel;
 import com.credpay.platform.repository.CreditCardRepository;
 import com.credpay.platform.service.CreditCardService;
+import com.credpay.platform.shared.ApiResponse;
+import com.credpay.platform.shared.CustomCredPayHttpStatus;
+import io.sentry.Sentry;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/card")
@@ -36,28 +40,39 @@ public class CardController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PostMapping("/add/{userId}/creditcard")
-    public ResponseEntity<CreditCardRestModel> addCreditCard(@PathVariable("userId") String userId,
-                                                             @RequestBody CreditCardDetailsRequest creditCardDetails) {
-        CreditCardDto creditCardDto = new CreditCardDto();
-        BeanUtils.copyProperties(creditCardDetails, creditCardDto);
-        CreditCardDto savedCreditCard = creditCardService.addCreditCard(userId, creditCardDto);
-        CreditCardRestModel returnvalue = new CreditCardRestModel();
-        BeanUtils.copyProperties(savedCreditCard, returnvalue);
-        return ResponseEntity.ok(returnvalue);
+    public ResponseEntity<ApiResponse> addCreditCard(@PathVariable("userId") String userId,
+                                                     @RequestBody CreditCardDetailsRequestModel creditCardDetails) {
+        Map data = new HashMap();
+        try {
+            CreditCardDto creditCardDto = new CreditCardDto();
+            BeanUtils.copyProperties(creditCardDetails, creditCardDto);
+            CreditCardDto savedCreditCard = creditCardService.addCreditCard(userId, creditCardDto);
+            data.put("data", savedCreditCard);
+            return ResponseEntity.ok(new ApiResponse(data, "success", CustomCredPayHttpStatus.SUCCESS.ordinal()));
+        }catch (Exception ex) {
+            Sentry.captureException(ex);
+            data.put("message", ex.getClass().getName() + ": " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(data, "failed", CustomCredPayHttpStatus.FAILED.ordinal()));
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PutMapping("/{userId}/update/{id}")
-    public ResponseEntity<CreditCardRestModel> updateCreditCard(@PathVariable("userId") String userId,
+    public ResponseEntity<CreditCardDto> updateCreditCard(@PathVariable("userId") String userId,
                                                                 @PathVariable("id") Long id,
                                                                 @RequestBody UpdateCardDto updateCardDto) {
-        CreditCardRestModel creditCardRestModel = new CreditCardRestModel();
+        Map data = new HashMap();
+        try {
         CreditCardDto creditCardDto = new CreditCardDto();
         BeanUtils.copyProperties(updateCardDto, creditCardDto);
         CreditCardDto updatedCreditCard = creditCardService.updateCreditCard(userId, id, creditCardDto);
-        CreditCardRestModel returnvalue = new CreditCardRestModel();
-        BeanUtils.copyProperties(updatedCreditCard, returnvalue);
-        return ResponseEntity.ok(returnvalue);
+        data.put("data", updatedCreditCard);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedCreditCard);
+        }catch (Exception ex) {
+            Sentry.captureException(ex);
+            data.put("message", ex.getClass().getName() + ": " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
 
     }
 

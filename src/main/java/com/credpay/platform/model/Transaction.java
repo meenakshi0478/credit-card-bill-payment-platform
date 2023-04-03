@@ -1,36 +1,35 @@
 package com.credpay.platform.model;
 
+import com.lowagie.text.pdf.PdfPCell;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-
+@Getter
+@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "transaction_amount")
-    private double transactionAmount;
+    @Column(name = "amount")
+    private double amount;
 
-    @Column(name = "transaction_date")
-    private LocalDate transactionDate;
+    @Column
+    private String userId;
 
-    private String transactionType;
+    @Column(name = "date")
+    private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "credit_card_id")
-    private CreditCard creditCard;
-
-    @ManyToOne
-    @JoinColumn(name = "bill_id")
-    private Bill bill;
+    private String description;
 
     @ManyToOne
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
-    private String status;
-
+    @JoinColumn(name = "credit_card_id",referencedColumnName = "id", nullable = false)
+    private CreditCard creditCardId;
 }
-
-

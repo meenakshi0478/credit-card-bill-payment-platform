@@ -40,7 +40,7 @@ public class CreditCardService {
         creditCard.setCurrentDebt(creditCardDto.getTotalLimit().subtract(creditCardDto.getAvailableCardLimit()));
         CreditCard storedCreditCard = creditCardRepository.save(creditCard);
         User user = userRepository.findByUserId(userId);
-        emailSenderService.sendSimpleEmail(user.getEmail()," CreditCard Added Successfully",
+        emailSenderService.sendSimpleEmail("meenakshimanirudhan@gmail.com"," CreditCard Added Successfully",
                 "Hi " + user.getFirstName() + " You have successfully added your CreditCard with Number " + creditCard.getCardNumber()+
                         " To your CredPay Account " +
                         " Reagards CredPay Team!");

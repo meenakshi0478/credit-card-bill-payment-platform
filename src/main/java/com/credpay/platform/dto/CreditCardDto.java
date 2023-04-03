@@ -16,8 +16,4 @@ public class CreditCardDto {
     private BigDecimal totalLimit;
     private BigDecimal availableCardLimit;
     private BigDecimal currentDebt;
-    private BigDecimal minimumPaymentAmount;
-    private LocalDate cutoffDate;
-    private LocalDate dueDate;
-    private LocalDate cancelDate;
 }

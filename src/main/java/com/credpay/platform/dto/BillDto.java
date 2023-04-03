@@ -18,7 +18,6 @@ public class BillDto {
     private String userId;
     private String CardholderName;
     private Long creditCardId;
-    private String description;
     private boolean paid;
 
 

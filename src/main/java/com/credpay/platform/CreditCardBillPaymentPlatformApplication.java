@@ -39,12 +39,5 @@ public class CreditCardBillPaymentPlatformApplication {
 	public AppProperties getAppProperties() {
 		return new AppProperties();
 	}
-	/*@EventListener(ApplicationReadyEvent.class)
-	public void triggerMail() throws MessagingException {
-		senderService.sendSimpleEmail("test",
-				"This is email body",
-				"This is email subject");
-
-	}*/
 
 }

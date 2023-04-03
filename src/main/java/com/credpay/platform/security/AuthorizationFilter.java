@@ -3,7 +3,6 @@ package com.credpay.platform.security;
 import com.credpay.platform.model.User;
 import com.credpay.platform.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
     private final UserRepository userRepository;
@@ -48,8 +46,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             if (user != null) {
                 User user1 = userRepository.findByEmail(user);
                 if (user1==null) return null;
-                UserPrincipals userPrincipals = new UserPrincipals(user1);
-                return new UsernamePasswordAuthenticationToken(userPrincipals, null, userPrincipals.getAuthorities());
+                UserPrincipal userPrincipal = new UserPrincipal(user1);
+                return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
             }
             return null;
         }

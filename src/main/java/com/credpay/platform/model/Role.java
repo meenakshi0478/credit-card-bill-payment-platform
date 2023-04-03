@@ -66,4 +66,3 @@ public class Role implements Serializable {
         this.authorities = authorities;
     }
 }
-

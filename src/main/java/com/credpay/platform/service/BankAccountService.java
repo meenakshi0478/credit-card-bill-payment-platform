@@ -1,9 +1,10 @@
 package com.credpay.platform.service;
 
 import com.credpay.platform.dto.BankAccountDto;
+import com.credpay.platform.dto.UpdateBankAccountDto;
 import com.credpay.platform.exceptions.ErrorMessages;
 import com.credpay.platform.exceptions.UserServiceException;
-import com.credpay.platform.model.BankAccountModel;
+import com.credpay.platform.model.BankAccount;
 import com.credpay.platform.repository.BankAccountRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,40 +23,37 @@ public class BankAccountService {
             throw new UserServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
         }
 
-        BankAccountModel bankAccountModel = new BankAccountModel();
-        BeanUtils.copyProperties(bankAccountDto, bankAccountModel );
-        bankAccountModel.setUserId(userId);
-        BankAccountModel storedBankDetails = bankAccountRepository.save(bankAccountModel);
+        BankAccount bankAccount = new BankAccount();
+        BeanUtils.copyProperties(bankAccountDto, bankAccount);
+        bankAccount.setUserId(userId);
+        BankAccount storedBankDetails = bankAccountRepository.save(bankAccount);
         BankAccountDto returnValue = new BankAccountDto();
         BeanUtils.copyProperties(storedBankDetails, returnValue);
         return returnValue;
     }
 
-    public BankAccountDto updateBankAccount(String userId, Long id, BankAccountDto bankAccountDto) {
-        BankAccountDto returnValue = new BankAccountDto();
-        BankAccountModel bankAccount = bankAccountRepository.findByUserIdAndId(userId, id);
+    public UpdateBankAccountDto updateBankAccount(String userId, Long id, UpdateBankAccountDto bankAccountDto) {
+        UpdateBankAccountDto returnValue = new UpdateBankAccountDto();
+        BankAccount bankAccount = bankAccountRepository.findByUserIdAndId(userId, id);
         if (bankAccount == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-
         bankAccount.setAccountBalance(bankAccountDto.getAccountBalance());
-        bankAccount.setAccountNo(bankAccountDto.getAccountNo());
         bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
         bankAccount.setIfsc(bankAccountDto.getIfsc());
-        bankAccount.setAccountBalance(bankAccountDto.getAccountBalance());
-        BankAccountModel updatedBankDetails = bankAccountRepository.save(bankAccount);
+        BankAccount updatedBankDetails = bankAccountRepository.save(bankAccount);
         BeanUtils.copyProperties(updatedBankDetails, returnValue);
         return returnValue;
     }
 
 
     public void deleteByUserIdAndId(String userId, Long id) {
-        BankAccountModel bankAccountModel = bankAccountRepository.findByUserIdAndId(userId, id);
-        if (bankAccountModel == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        bankAccountRepository.delete(bankAccountModel);
+        BankAccount bankAccount = bankAccountRepository.findByUserIdAndId(userId, id);
+        if (bankAccount == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+        bankAccountRepository.delete(bankAccount);
     }
 
-    public Optional<BankAccountModel> getBankDetailsById(Long id) {
-        Optional<BankAccountModel> bankAccountModel= bankAccountRepository.findById(id);
-        if(bankAccountModel== null) throw new RuntimeException("Bank Details Not Found");
+    public Optional<BankAccount> getBankDetailsById(Long id) {
+        Optional<BankAccount> bankAccountModel= bankAccountRepository.findById(id);
+        if(bankAccountModel.isEmpty()) throw new RuntimeException("Bank Details Not Found");
         return bankAccountModel;
     }
 }

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Bill {
+public class Bill extends DateAudit{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,11 +37,6 @@ public class Bill {
 
     @Column(name = "user_id")
     private String userId;
-
-    @Column(name = "biller_id")
-    private Long biller;
-
-    private String description;
 
     private boolean paid = Boolean.FALSE;
 

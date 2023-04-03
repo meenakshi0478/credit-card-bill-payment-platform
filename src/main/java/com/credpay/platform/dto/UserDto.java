@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +19,6 @@ public class UserDto implements Serializable {
     private String email;
     private String password;
     private String phoneNumber;
-    private String userStatus;
-    private String encryptedPassword;
-    private String role;
+    private Collection <String> roles;
 
 }

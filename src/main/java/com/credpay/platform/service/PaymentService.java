@@ -1,9 +1,6 @@
 package com.credpay.platform.service;
 
-import com.credpay.platform.dto.BankAccountDto;
-import com.credpay.platform.dto.BillDto;
 import com.credpay.platform.dto.PaymentDto;
-import com.credpay.platform.exceptions.ErrorMessages;
 import com.credpay.platform.model.*;
 import com.credpay.platform.repository.*;
 import com.credpay.platform.shared.Utils;
@@ -11,8 +8,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 
 @Service
 public class PaymentService {
@@ -38,16 +38,16 @@ public class PaymentService {
     @Autowired
     private Utils utils;
 
-    public PaymentDto processPayment(Long id, String userId,PaymentDto paymentDto) {
+    public PaymentDto processPayment(Long id, String userId, PaymentDto paymentDto) throws MessagingException {
         PaymentDto returnValue = new PaymentDto();
         Payment payment = new Payment();
         BeanUtils.copyProperties(paymentDto,payment);
         Bill bill = billRepository.findByUserIdAndId(userId,id);
         CreditCard creditCard = creditCardRepository.findByUserIdAndId(userId,paymentDto.getCreditCardId());
         String publicReferenceId = utils.generateUserId(30);
-        BankAccountModel bankAccountModel = bankAccountRepository.findByUserId(userId);
+        BankAccount bankAccount = bankAccountRepository.findByUserId(userId);
 
-        if (bill.isPaid()==false && bill.getBillAmount().compareTo(bankAccountModel.getAccountBalance())==-1 ) {
+        if (bill.isPaid()==false && bill.getBillAmount().compareTo(bankAccount.getAccountBalance())==-1 ) {
             payment.setPaymentAmount(bill.getBillAmount());
             payment.setPaymentReference(publicReferenceId);
             payment.setBillId(id);
@@ -58,13 +58,11 @@ public class PaymentService {
             creditCard.setAvailableCardLimit(creditCard.getTotalLimit());
             creditCard.setCurrentDebt(BigDecimal.valueOf(0));
             CreditCard updateCrediCard = creditCardRepository.save(creditCard);
-            bankAccountModel.setAccountBalance(bankAccountModel.getAccountBalance().subtract(bill.getBillAmount()));
-            BankAccountModel updateBankBalance = bankAccountRepository.save(bankAccountModel);
+            bankAccount.setAccountBalance(bankAccount.getAccountBalance().subtract(bill.getBillAmount()));
+            BankAccount updateBankBalance = bankAccountRepository.save(bankAccount);
 
             User user = userRepository.findByUserId(userId);
-            emailSenderService.sendSimpleEmail(user.getEmail()," CreditCard Due Payment Completed ",
-                    "Hi " + user.getFirstName() + " You have successfully closed your due amount Rs "+ bill.getBillAmount()+" of your CredirCard" + creditCard.getCardNumber()+
-                            " Regards CredPay Team!");
+            emailSenderService.sendPaymentStatus(creditCard,bill,payment);
             BeanUtils.copyProperties(updatedPaymentDetails, returnValue);
             return returnValue;
         }

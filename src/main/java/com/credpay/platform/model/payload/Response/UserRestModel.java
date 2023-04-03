@@ -1,4 +1,4 @@
-package com.credpay.platform.model.payload;
+package com.credpay.platform.model.payload.Response;
 
 public class UserRestModel {
 

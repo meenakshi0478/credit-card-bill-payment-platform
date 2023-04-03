@@ -2,7 +2,7 @@ package com.credpay.platform.security;
 
 import com.credpay.platform.SpringApplicationContext;
 import com.credpay.platform.dto.UserDto;
-import com.credpay.platform.model.payload.UserLoginRequestModel;
+import com.credpay.platform.model.payload.Request.UserLoginRequestModel;
 import com.credpay.platform.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -43,7 +43,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        String userName = ((UserPrincipals)auth.getPrincipal()).getUsername();
+        String userName = ((UserPrincipal)auth.getPrincipal()).getUsername();
         String token = Jwts.builder()
                 .setSubject(userName)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))

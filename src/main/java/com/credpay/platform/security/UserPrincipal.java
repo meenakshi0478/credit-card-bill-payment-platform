@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserPrincipals implements UserDetails {
+public class UserPrincipal implements UserDetails {
     private static final long serialVersionUID= -3206518490338399368L;
     private User user;
     private String userId;
 
-    public UserPrincipals(User user) {
+    public UserPrincipal(User user) {
         this.user = user;
         this.userId = user.getUserId();
     }
