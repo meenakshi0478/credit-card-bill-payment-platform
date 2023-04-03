@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
+
     private final UserRepository userRepository;
     public AuthorizationFilter(AuthenticationManager authManager, UserRepository userRepository){
         super(authManager);

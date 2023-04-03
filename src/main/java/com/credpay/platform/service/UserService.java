@@ -37,7 +37,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private Utils utils;
 
-
     @Autowired
     private RoleRepository roleRepository;
 
@@ -46,11 +45,12 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     EmailSenderService emailSenderService;
+
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
     @Autowired
     private CreditCardRepository creditCardRepository;
-
 
     public UserRestModel createUser(UserDto userDto) {
 
@@ -88,7 +88,6 @@ public class UserService implements UserDetailsService {
     }
 
 
-
     public UserDto getUser(String email) {
         User user= userRepository.findByEmail(email);
         if(user == null) throw new UsernameNotFoundException(email);
@@ -120,6 +119,7 @@ public class UserService implements UserDetailsService {
         return returnValue;
     }
 
+
     public void deleteUserById(String userId) {
         User user = userRepository.findByUserId(userId);
 
@@ -137,8 +137,8 @@ public class UserService implements UserDetailsService {
         emailSenderService.sendSimpleEmail(user.getEmail()," CREDPAY Account Deactivated",
                 "Hi " + user.getFirstName() + " Your CredPay Account has been Deactivated " +
                         " Regard CredPay Team");
-
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

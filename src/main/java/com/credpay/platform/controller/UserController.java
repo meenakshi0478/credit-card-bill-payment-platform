@@ -36,7 +36,6 @@ public class UserController {
     public void User() {
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getUser(@PathVariable String id ) {
@@ -51,6 +50,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(data, "failed", CustomCredPayHttpStatus.FAILED.ordinal()));
         }
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> createUser(@RequestBody UserDto userDto) {
@@ -85,6 +85,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(data, "failed", CustomCredPayHttpStatus.FAILED.ordinal()));
         }
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
     @DeleteMapping("/{id}/delete")

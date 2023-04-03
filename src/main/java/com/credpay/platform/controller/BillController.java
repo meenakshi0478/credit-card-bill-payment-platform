@@ -31,19 +31,25 @@ import java.util.Map;
 @RequestMapping("/api/bills")
 public class BillController {
 
+
     @Autowired
     private BillService billService;
+
     @Autowired
     private PaymentService paymentService;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private CreditCardRepository creditCardRepository;
+
     @Autowired
     EmailSenderService emailSenderService;
 
     @Autowired
     PDFGeneratorService pdfGeneratorService;
+
     @Autowired
     private TransactionRepository transactionRepository;
 
@@ -75,6 +81,7 @@ public class BillController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(data, "failed", CustomCredPayHttpStatus.FAILED.ordinal()));
         }
     }
+
 
     @PreAuthorize("#userId == principal.userId")
     @PostMapping("/pay/{id}/{userId}")

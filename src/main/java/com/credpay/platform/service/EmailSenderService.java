@@ -30,10 +30,8 @@ public class EmailSenderService {
     @Autowired
     private JavaMailSender mailSender;
 
-
     @Autowired
     private Configuration config;
-
 
     @Autowired
     private PDFGeneratorService pdfService;

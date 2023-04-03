@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {

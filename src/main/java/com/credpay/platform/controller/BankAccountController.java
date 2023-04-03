@@ -60,6 +60,7 @@ public class BankAccountController {
 
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @PutMapping("/{userId}/update/{id}")
     public ResponseEntity<ApiResponse> updateAccount(@PathVariable("userId") String userId,
@@ -76,6 +77,7 @@ public class BankAccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(data, "failed", CustomCredPayHttpStatus.FAILED.ordinal()));
         }
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
     @DeleteMapping("/{userId}/delete/{id}")

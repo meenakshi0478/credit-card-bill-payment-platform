@@ -17,6 +17,7 @@ public class BankAccountService {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
     public BankAccountDto addBankDetails(String userId, BankAccountDto bankAccountDto)  {
 
         if (bankAccountRepository.findByAccountNo(bankAccountDto.getAccountNo())!=null){

@@ -34,7 +34,6 @@ public class BillService {
     @Autowired
     private EmailSenderService emailSenderService;
 
-
     public List<Bill> getAllBills() {
         return billRepository.findAll();
     }
